@@ -117,13 +117,13 @@ class AboutWindow(QtWidgets.QWidget):
             for line in request.urlopen(req, timeout=3):
                 line = line.decode("utf-8")
                 if line.startswith("VERSION ="):
-                    latest_version = Version(line[8:].strip(" \"'"))
+                    latest_version = Version(line[8:].strip("\n \"'"))
                 if line.startswith("RELEASE_URL ="):
-                    latest_url = line[13:].strip(" \"'")
+                    latest_url = line[13:].strip("\n \"'")
         except error.HTTPError as e:
             logger.exception(
                 "Checking for updates produced an HTTP exception: %s", e)
-            self.updateLabel.setText("Connection error.")
+            self.updateLabel.setText(f"{e}:\n{VERSION_URL}")
             return
         except TypeError as e:
             logger.exception(
